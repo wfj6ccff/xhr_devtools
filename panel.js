@@ -61,18 +61,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * 修正：sendData 现在可以接收一个事件对象，以便为手动发送提供UI反馈。
+     * 在自动发送时，它会调用一个新的通知函数。
      */
     async function sendData(event) {
         const button = event ? event.target : null;
 
         if (!capturedJson) {
             if (button) showButtonFeedback(button, "无数据", false);
-            else alert("没有可发送的数据。");
             return;
         }
         if (!config.sendUrl) {
             if (button) showButtonFeedback(button, "URL未配置", false);
-            else alert("请先配置发送URL。");
             return;
         }
 
@@ -91,14 +90,26 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!response.ok) {
                 console.error(`数据发送失败: HTTP ${response.status} ${response.statusText}`);
-                if (button) showButtonFeedback(button, `失败: ${response.status}`, false);
+                if (button) {
+                    showButtonFeedback(button, `失败: ${response.status}`, false);
+                } else {
+                    showAutoSendNotification(`自动发送失败: ${response.status}`, false);
+                }
             } else {
                 console.log("数据发送成功。");
-                if (button) showButtonFeedback(button, "发送成功!", true);
+                if (button) {
+                    showButtonFeedback(button, "发送成功!", true);
+                } else {
+                    showAutoSendNotification("自动发送成功!", true);
+                }
             }
         } catch (e) {
             console.error("发送数据时出错:", e);
-            if (button) showButtonFeedback(button, "发送错误", false);
+            if (button) {
+                showButtonFeedback(button, "发送错误", false);
+            } else {
+                showAutoSendNotification("自动发送错误", false);
+            }
         }
     }
 
@@ -139,22 +150,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- UI 和状态管理 ---
 
     /**
-     * 新增：一个通用的函数，用于在按钮上显示临时反馈。
+     * 新增：一个用于自动发送模式的非阻塞通知。
+     */
+    function showAutoSendNotification(message, isSuccess) {
+        const notification = document.createElement('div');
+        notification.className = `auto-send-notification ${isSuccess ? 'success' : 'error'}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 3000); // 3秒后移除
+    }
+
+    /**
+     * 修正：一个通用的函数，用于在按钮上显示临时反馈。
      * @param {HTMLElement} button - 要修改的按钮元素。
      * @param {string} message - 要显示的临时消息。
      * @param {boolean} isSuccess - 操作是否成功，决定了按钮的颜色。
      */
     function showButtonFeedback(button, message, isSuccess) {
         const originalText = button.textContent;
-        const originalClassName = button.className;
-
         button.textContent = message;
-        button.className = isSuccess ? 'btn-action success' : 'btn-action error';
+        button.classList.add(isSuccess ? 'success' : 'error');
         button.disabled = true;
 
         setTimeout(() => {
             button.textContent = originalText;
-            button.className = originalClassName;
+            button.classList.remove('success', 'error');
             button.disabled = false;
         }, 2000); // 2秒后恢复
     }

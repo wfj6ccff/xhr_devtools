@@ -14,11 +14,16 @@
         .radio-group { display: flex; gap: 8px; align-items: center; }
         .radio-group label { display: flex; align-items: center; gap: 2px; font-size: 10px; }
         button { border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 10px; font-weight: 500; color: white; transition: background-color 0.2s; }
-        button:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        button:disabled { background-color: #9ca3af; cursor: not-allowed; opacity: 0.7; }
         #start-monitoring.start { background-color: #059669; }
         #start-monitoring.stop { background-color: #dc2626; }
         .btn-action { background-color: #4f46e5; }
         .btn-manual-send { background-color: #f59e0b; }
+
+        /* 新增：按钮反馈样式 */
+        .btn-action.success, .btn-manual-send.success { background-color: #059669; }
+        .btn-action.error, .btn-manual-send.error { background-color: #dc2626; }
+
         #status { font-size: 10px; font-weight: 500; }
         #status.on { color: #059669; }
         #status.off { color: #6b7280; }
@@ -27,6 +32,18 @@
         #data-actions { display: flex; gap: 6px; }
         #data-container { flex-grow: 1; border: 1px solid #374151; border-radius: 6px; overflow: hidden; }
         pre { margin: 0; font-size: 11px; white-space: pre-wrap; word-wrap: break-word; height: 100%; overflow-y: auto; background: #1f2937; color: #e5e7eb; padding: 10px; box-sizing: border-box; }
+
+        /* 新增：自动发送通知的样式 */
+        .auto-send-notification { position: fixed; top: 10px; right: 10px; padding: 8px 12px; border-radius: 6px; color: white; font-size: 11px; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.2); animation: fadeInOut 3s ease-in-out forwards; }
+        .auto-send-notification.success { background-color: #059669; }
+        .auto-send-notification.error { background-color: #dc2626; }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
     </style>
 </head>
 <body>
