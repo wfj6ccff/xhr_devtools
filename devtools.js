@@ -1,13 +1,12 @@
 // devtools.js
-// This script has one job: create the panel.
-// All the real logic is in panel.js.
+// 这个脚本的唯一工作就是创建面板。
 
 try {
   chrome.devtools.panels.create(
-    "API Monitor",           // Panel title
-    "",
-    "panel.html",            // The HTML page for the panel's content
-    null                     // Callback function
+    "API \u63a5\u53e3\u76d1\u542c\u5668", // "API 接口监听器" 的 Unicode 编码
+    "icons/icon16.png",
+    "panel.html",
+    null
   );
 } catch (e) {
   console.error(e);

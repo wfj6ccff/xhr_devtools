@@ -1,8 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "API Monitor (The Right Way)",
-  "version": "1.0",
-  "description": "Monitors network requests using the DevTools panel without injecting scripts into pages.",
+  "name": "API 接口监听器",
+  "version": "2.0",
+  "description": "一个基于DevTools面板的、无侵入式的网络请求监控工具。",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "devtools_page": "devtools.html",
   "permissions": [
     "storage"

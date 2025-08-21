@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>API Monitor Panel</title>
+    <title>API 监听器面板</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; margin: 0; padding: 10px; background-color: #f8f9fa; display: flex; flex-direction: column; height: 100vh; box-sizing: border-box; }
         .config-section, .data-section { background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 10px; }
@@ -10,14 +10,21 @@
         .form-group { margin-bottom: 8px; }
         label { display: block; font-size: 10px; color: #6b7280; margin-bottom: 2px; }
         input[type="text"] { width: 100%; padding: 5px 6px; border: 1px solid #d1d5db; border-radius: 3px; font-size: 10px; box-sizing: border-box; }
-        .controls { display: flex; align-items: center; gap: 10px; }
-        button { border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 10px; font-weight: 500; color: white; }
+        .controls { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        .radio-group { display: flex; gap: 8px; align-items: center; }
+        .radio-group label { display: flex; align-items: center; gap: 2px; font-size: 10px; }
+        button { border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 10px; font-weight: 500; color: white; transition: background-color 0.2s; }
+        button:disabled { background-color: #9ca3af; cursor: not-allowed; }
         #start-monitoring.start { background-color: #059669; }
         #start-monitoring.stop { background-color: #dc2626; }
+        .btn-action { background-color: #4f46e5; }
+        .btn-manual-send { background-color: #f59e0b; }
         #status { font-size: 10px; font-weight: 500; }
         #status.on { color: #059669; }
         #status.off { color: #6b7280; }
         .data-section { flex-grow: 1; display: flex; flex-direction: column; }
+        .data-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        #data-actions { display: flex; gap: 6px; }
         #data-container { flex-grow: 1; border: 1px solid #374151; border-radius: 6px; overflow: hidden; }
         pre { margin: 0; font-size: 11px; white-space: pre-wrap; word-wrap: break-word; height: 100%; overflow-y: auto; background: #1f2937; color: #e5e7eb; padding: 10px; box-sizing: border-box; }
     </style>
@@ -31,8 +38,20 @@
             <input type="text" id="target-url-input" placeholder="例如: /api/user/profile">
         </div>
         <div class="form-group">
-            <label for="send-url-input">发送URL (可选)</label>
-            <input type="text" id="send-url-input" placeholder="例如: [http://127.0.0.1:8000/data](http://127.0.0.1:8000/data)">
+            <label for="send-url-input">发送URL</label>
+            <input type="text" id="send-url-input" placeholder="例如: http://127.0.0.1:8000/data">
+        </div>
+        <div class="form-group">
+            <label for="tag-input">名称标签 Tag (可选)</label>
+            <input type="text" id="tag-input" placeholder="用于标记数据的参数">
+        </div>
+        <div class="form-group">
+            <label>发送模式</label>
+            <div class="radio-group">
+                <label><input type="radio" name="send-mode" value="auto"> 自动</label>
+                <label><input type="radio" name="send-mode" value="manual"> 手动</label>
+                <label><input type="radio" name="send-mode" value="cancel" checked> 取消</label>
+            </div>
         </div>
         <div class="controls">
             <button id="start-monitoring" class="start">开始监听</button>
@@ -41,7 +60,10 @@
     </div>
 
     <div class="data-section">
-        <h4>捕获的数据</h4>
+        <div class="data-header">
+            <h4>捕获的数据</h4>
+            <div id="data-actions"></div>
+        </div>
         <div id="data-container">
             <pre id="json-content">等待数据...</pre>
         </div>
