@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>API Monitor Panel</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; margin: 0; padding: 10px; background-color: #f8f9fa; display: flex; flex-direction: column; height: 100vh; box-sizing: border-box; }
+        .config-section, .data-section { background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 10px; }
+        h4 { margin: 0 0 8px 0; font-size: 11px; font-weight: 600; color: #374151; }
+        .form-group { margin-bottom: 8px; }
+        label { display: block; font-size: 10px; color: #6b7280; margin-bottom: 2px; }
+        input[type="text"] { width: 100%; padding: 5px 6px; border: 1px solid #d1d5db; border-radius: 3px; font-size: 10px; box-sizing: border-box; }
+        .controls { display: flex; align-items: center; gap: 10px; }
+        button { border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 10px; font-weight: 500; color: white; }
+        #start-monitoring.start { background-color: #059669; }
+        #start-monitoring.stop { background-color: #dc2626; }
+        #status { font-size: 10px; font-weight: 500; }
+        #status.on { color: #059669; }
+        #status.off { color: #6b7280; }
+        .data-section { flex-grow: 1; display: flex; flex-direction: column; }
+        #data-container { flex-grow: 1; border: 1px solid #374151; border-radius: 6px; overflow: hidden; }
+        pre { margin: 0; font-size: 11px; white-space: pre-wrap; word-wrap: break-word; height: 100%; overflow-y: auto; background: #1f2937; color: #e5e7eb; padding: 10px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <div class="config-section">
+        <h4>监听配置</h4>
+        <div class="form-group">
+            <label for="target-url-input">监听URL (包含即可)</label>
+            <input type="text" id="target-url-input" placeholder="例如: /api/user/profile">
+        </div>
+        <div class="form-group">
+            <label for="send-url-input">发送URL (可选)</label>
+            <input type="text" id="send-url-input" placeholder="例如: [http://127.0.0.1:8000/data](http://127.0.0.1:8000/data)">
+        </div>
+        <div class="controls">
+            <button id="start-monitoring" class="start">开始监听</button>
+            <span id="status" class="off">● 未监听</span>
+        </div>
+    </div>
+
+    <div class="data-section">
+        <h4>捕获的数据</h4>
+        <div id="data-container">
+            <pre id="json-content">等待数据...</pre>
+        </div>
+    </div>
+
+    <script src="panel.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "API Monitor (The Right Way)",
+  "version": "1.0",
+  "description": "Monitors network requests using the DevTools panel without injecting scripts into pages.",
+  "devtools_page": "devtools.html",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}
