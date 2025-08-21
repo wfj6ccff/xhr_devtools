@@ -60,12 +60,6 @@
 
 ---
 
-## 截图展示
-
-(![img.png](img.png))
-
----
-
 ## 贡献指南
 
 欢迎提交 Issue 或 Pull Request 改进本项目。
